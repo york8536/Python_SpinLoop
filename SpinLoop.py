@@ -36,7 +36,7 @@ req_20010 = {
 }
 
 req_20020 = {
-  "OP":20020, 
+  "OP":20020,
   "PerPage": 1,
   "Multiplier": "0.01"
 }
@@ -73,26 +73,35 @@ async def connect_ws():
         response_20010 = await websocket.recv()
         print("Response (OP: 20010):", response_20010)
 
-        for x in range(5000):
+        for x in range(10):
             # 发送第三个请求 (OP: 20020)
             req_20020_json = json.dumps(req_20020)
             await websocket.send(req_20020_json)
             # print("Request sent (OP: 20020):", req_20020)
             
+            while True:
             # 接收服务器的响应并打印
-            response_20020 = await websocket.recv()
-            # print("Response (OP: 20020):", response_20020)
-            print("Response (OP: 20020):", x)
-
+                response_20020 = await websocket.recv()
+                response_20020 = json.loads(response_20020)
+                if response_20020['OP'] == 20021:
+                    # print("Response (OP: 20020):", response_20020)
+                    # print("Response (OP: 20020):", x+1)
+                    break
+                
             # 发送第四个请求 (OP: 20040)
             req_20040_json = json.dumps(req_20040)
             await websocket.send(req_20040_json)
             # print("Request sent (OP: 20040):", req_20040)
             
-            # 接收服务器的响应并打印
-            response_20040 = await websocket.recv()
-            # print("Response (OP: 20040):", response_20040)
-            # print("Response (OP: 20040):", x)
+            while True:
+                # 接收服务器的响应并打印
+                response_20040 = await websocket.recv()
+                response_20040 = json.loads(response_20040)
+                if response_20040['OP'] == 20041:
+                    # print("Response (OP: 20040):", response_20040)
+                    # print("Response (OP: 20040):", x+1)
+                    break
+            print('spin次數',x+1)
 
         try:
             # 關閉 WebSocket 連線
