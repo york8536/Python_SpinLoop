@@ -6,7 +6,7 @@ import time
 
 # --------------------------------------------------------------------------------- api參數設定
 req_login = { 
-        "SiteID": "str",
+        "SiteID": "qat", # 記得改環境
         "DeviceID": "qatest_0516_2", # ID:6666758868 WS也要改DeviceID
         "TPType": 1,
         "PlatID": 2, # PlatID   1:android   2:ios   3:web
@@ -14,7 +14,7 @@ req_login = {
     }
 
 # --------------------------------------------------------------------------------- api
-r = requests.post('https://sphoenix.1161023.lol/api/v1/login', json = req_login)
+r = requests.post('https://qphoenix.1161023.lol/api/v1/login', json = req_login) # 記得改環境
 # r = requests.post('https://10.70.78.71/api/v1/login', json = req_login)
 print(r)
 print(r.content)
@@ -38,7 +38,7 @@ req_20010 = {
 req_20020 = {
   "OP":20020,
   "PerPage": 1,
-  "Multiplier": "0.01"
+  "Multiplier": "100"
 }
 
 req_20040 = {
@@ -47,7 +47,7 @@ req_20040 = {
 # -----------------------------------------------------------------------------websocket
 
 # WebSocket服务器的地址
-url = "ws://sphoenix.1161023.lol/ws/game"
+url = "ws://qphoenix.1161023.lol/ws/game" # 記得改環境
 
 async def connect_ws():
     start_time = time.time()  # 開始記錄時間
@@ -73,7 +73,7 @@ async def connect_ws():
         response_20010 = await websocket.recv()
         print("Response (OP: 20010):", response_20010)
 
-        for x in range(10):
+        for x in range(500):
             # 发送第三个请求 (OP: 20020)
             req_20020_json = json.dumps(req_20020)
             await websocket.send(req_20020_json)

@@ -17,11 +17,11 @@ token = r_login.json()["Result"]["APIToken"] # 撈出res中的 token
 Player_list = { # 參數設定
     "Identity": [2], # 身份別 1: 正式 2: 測試
     "lastLoginTime": { 
-        "StartTime": "2023-12-20T00:00:00+08:00",
-        "EndTime": "2023-12-21T00:00:00+08:00"
+        "StartTime": "2024-07-24T00:00:00+08:00",
+        "EndTime": "2024-07-27T00:00:00+08:00"
     },
     "Page": 1,
-    "Perpage": 10 # 資料筆數
+    "Perpage": 20 # 資料筆數
 }
 headers = {
     'api-token' : token,
