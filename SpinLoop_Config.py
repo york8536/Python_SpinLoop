@@ -14,3 +14,6 @@ gameCode = "10001"
 
 # spin次數
 spinTimes = 3
+
+# 是否使用數值腳本 True / False
+script = True

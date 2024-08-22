@@ -36,6 +36,11 @@ req_20010 = {
     "GameCode":SpinLoop_Config.gameCode
 }
 
+req_20230 = {
+    "OP": 20030,
+    "Script": "script-QATest.json"
+}
+
 req_20020 = {
   "OP":20020,
   "PerPage": 1,
@@ -55,33 +60,45 @@ async def connect_ws():
     async with websockets.connect(url) as websocket:
         print("WebSocket 连接已建立")
         
-        # 发送第一个请求 (OP: 10000)
+        # 初始化
         req_10000_json = json.dumps(req_10000)
         await websocket.send(req_10000_json)
         print("Request sent (OP: 10000):", req_10000)
         
-        # 接收服务器的响应并打印
+        # 接收服務的響應並印出
         response_10000 = await websocket.recv()
         print("Response (OP: 10000):", response_10000)
 
         
-        # 发送第二个请求 (OP: 20010)
+        # 進入遊戲
         req_20010_json = json.dumps(req_20010)
         await websocket.send(req_20010_json)
         print("Request sent (OP: 20010):", req_20010)
         
-        # 接收服务器的响应并打印
+        # 接收服務的響應並印出
         response_20010 = await websocket.recv()
         print("Response (OP: 20010):", response_20010)
 
         for x in range(SpinLoop_Config.spinTimes):
-            # 发送第三个请求 (OP: 20020)
+            if SpinLoop_Config.script == True:
+                # 使用數值腳本
+                req_20230_json = json.dumps(req_20230)
+                await websocket.send(req_20230_json)
+                # print("Request sent (OP: 20230):", req_20230)
+                # 接收服務的響應
+                while True:
+                    response_20230 = await websocket.recv() 
+                    response_20230 = json.loads(response_20230)
+                    if response_20230['Code'] == 200:
+                        break
+
+            # spin
             req_20020_json = json.dumps(req_20020)
             await websocket.send(req_20020_json)
             # print("Request sent (OP: 20020):", req_20020)
             
             while True:
-            # 接收服务器的响应并打印
+            # 接收服務的響應並印出
                 response_20020 = await websocket.recv()
                 response_20020 = json.loads(response_20020)
                 if response_20020['OP'] == 20021:
@@ -89,13 +106,13 @@ async def connect_ws():
                     # print("Response (OP: 20020):", x+1)
                     break
                 
-            # 发送第四个请求 (OP: 20040)
+            # settle
             req_20040_json = json.dumps(req_20040)
             await websocket.send(req_20040_json)
             # print("Request sent (OP: 20040):", req_20040)
             
             while True:
-                # 接收服务器的响应并打印
+                # 接收服務的響應並印出
                 response_20040 = await websocket.recv()
                 response_20040 = json.loads(response_20040)
                 if response_20040['OP'] == 20041:
